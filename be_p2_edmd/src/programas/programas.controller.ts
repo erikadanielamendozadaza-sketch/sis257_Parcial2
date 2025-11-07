@@ -6,10 +6,13 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
+  DefaultValuePipe,
 } from '@nestjs/common';
 import { ProgramasService } from './programas.service';
 import { CreateProgramaDto } from './dto/create-programa.dto';
 import { UpdateProgramaDto } from './dto/update-programa.dto';
+import { ApiQuery } from '@nestjs/swagger';
 
 @Controller('programas')
 export class ProgramasController {
@@ -20,9 +23,10 @@ export class ProgramasController {
     return this.programasService.create(createProgramaDto);
   }
 
-  @Get()
-  findAll() {
-    return this.programasService.findAll();
+  @Get()  
+  @ApiQuery({ name: 'parametro', required: false })
+  findAll(@Query('parametro', new DefaultValuePipe('')) parametro?: string) {
+    return this.programasService.findAll(parametro);
   }
 
   @Get(':id')

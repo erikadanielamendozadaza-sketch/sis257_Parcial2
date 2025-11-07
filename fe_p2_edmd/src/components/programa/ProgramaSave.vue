@@ -34,6 +34,12 @@ const opcionesEstado = ref([
   { label: 'Finalizado', value: 'Finalizado' },
 ])
 
+const opcionesModalidad = ref([
+  { label: 'Presencial', value: 'Presencial' },
+  { label: 'Virtual', value: 'Virtual' },
+  { label: 'Mixta', value: 'Mixta' },
+])
+
 async function obtenerNiveles() {
   niveles.value = await http.get('niveles-academicos').then((response) => response.data)
 }
@@ -49,6 +55,7 @@ async function handleSave() {
       costo: programa.value.costo,
       fechaInicio: programa.value.fechaInicio,
       estado: programa.value.estado,
+      modalidadClases: programa.value.modalidadClases,
     }
     if (props.modoEdicion) {
       await http.patch(`${ENDPOINT}/${programa.value.id}`, body)
@@ -150,6 +157,9 @@ watch(
           class="flex-auto"
           :min="0"
           mode="decimal"
+          :minFractionDigits="2"
+          :maxFractionDigits="2"
+          locale="en-US"
         />
       </div>
       <div class="flex items-center gap-4 mb-4">
@@ -170,6 +180,18 @@ watch(
           optionLabel="label"
           optionValue="value"
           class="flex-auto"
+        />
+      </div>
+      <div class="flex items-center gap-4 mb-4">
+        <label for="modalidadClases" class="font-semibold w-3">Modalidad Clases</label>
+        <Dropdown
+          id="modalidadClases"
+          v-model="programa.modalidadClases"
+          :options="opcionesModalidad"
+          optionLabel="label"
+          optionValue="value"
+          class="flex-auto"
+          placeholder="Selecciona modalidad"
         />
       </div>
       <div class="flex justify-end gap-2">

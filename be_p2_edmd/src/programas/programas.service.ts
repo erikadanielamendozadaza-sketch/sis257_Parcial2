@@ -3,7 +3,7 @@ import { CreateProgramaDto } from './dto/create-programa.dto';
 import { UpdateProgramaDto } from './dto/update-programa.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Programa } from './entities/programa.entity';
-import { Repository } from 'typeorm';
+import { ILike, Repository } from 'typeorm';
 
 @Injectable()
 export class ProgramasService {
@@ -21,9 +21,10 @@ export class ProgramasService {
     return this.programasRepository.save(programa);
   }
 
-  async findAll(): Promise<Programa[]> {
+  async findAll(parametro?: string): Promise<Programa[]> {
     return this.programasRepository.find({
-      relations: { nivelAcademico: true},
+      where: { modalidadClases: ILike(`%${parametro ?? ''}%`) },
+      relations: { nivelAcademico: true },
       select: {
         id: true,
         nombre: true,
@@ -33,9 +34,10 @@ export class ProgramasService {
         costo: true,
         fechaInicio: true,
         estado: true,
+        modalidadClases: true,
         nivelAcademico: { id: true, nombre: true },
       },
-      order: {nombre: 'ASC'},
+      order: { nombre: 'ASC' },
     });
   }
 

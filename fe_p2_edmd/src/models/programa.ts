@@ -11,4 +11,5 @@ export interface Programa {
   fechaInicio: Date
   estado: 'En Planificación' | 'En curso' | 'Finalizado'
   nivelAcademico: NivelAcademico
+  modalidadClases: 'Presencial' | 'Virtual' | 'Mixta'
 }

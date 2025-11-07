@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { Transform } from "class-transformer";
-import { IsDateString, IsDefined, IsInt, IsNotEmpty, IsNumber, IsString, MaxLength, Min } from "class-validator";
+import { Transform, Type } from "class-transformer";
+import { IsDateString, IsDefined, IsInt, IsNotEmpty, IsNumber, IsOptional, IsString, MaxLength, Min } from "class-validator";
 
 export class CreateProgramaDto {
   @ApiProperty()
@@ -37,6 +37,7 @@ export class CreateProgramaDto {
   @ApiProperty()
   @IsDefined({ message: 'El campo costo debe estar definido' })
   @IsNumber({ maxDecimalPlaces: 5 }, { message:'El campo costo debe ser numérico con máximo cinco decimales'})
+  @Type(() => Number)
   @Min(0, { message: 'El campo costo no puede ser negativo' })
   costo: number;
 
@@ -44,4 +45,18 @@ export class CreateProgramaDto {
   @IsDefined({ message: 'El campo fecha de inicio debe estar definido' })
   @IsDateString({}, { message: 'El campo fecha de inicio debe ser una fecha válida' })
   fechaInicio: Date;
+
+  @ApiProperty()
+  @IsNotEmpty({ message: 'El campo estado no debe estar vacío' })
+  @IsString({ message: 'El campo estado debe ser de tip cadena' })
+  @MaxLength(20, { message: 'El campo estado no debe exceder los 20 caracteres' })
+  @Transform(({ value }): string | undefined => (typeof value === 'string' ? value.trim() : value))
+  estado: string;
+
+  @ApiProperty()
+  @IsNotEmpty({message: 'El campo modalidad de clases no debe esatr vacio'})
+  @IsString({ message: 'El campo modalidad de clases debe ser de tip cadena' })
+  @MaxLength(100, { message: 'El campo modalidad de clases no debe exceder los 100 caracteres' })
+  @Transform(({ value }): string | undefined => (typeof value === 'string' ? value.trim() : value))
+  modalidadClases: string;
 }

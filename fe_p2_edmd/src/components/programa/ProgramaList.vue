@@ -93,6 +93,12 @@ defineExpose({ obtenerLista })
         </template>
       </Column>
       <Column field="estado" header="Estado" sortable style="min-width: 120px"></Column>
+      <Column
+        field="modalidadClases"
+        header="Modalidad Clases"
+        sortable
+        style="min-width: 120px"
+      ></Column>
       <Column header="Acciones" frozen alignFrozen="right" style="min-width: 120px">
         <template #body="{ data }">
           <Button icon="pi pi-pencil" aria-label="Editar" text @click="emitirEdicion(data)" />
@@ -118,6 +124,7 @@ defineExpose({ obtenerLista })
           <th>Costo</th>
           <th>Fecha Inicio</th>
           <th>Estado</th>
+          <th>Modalidad Clases</th>
           <th>Acciones</th>
         </tr>
       </thead>
@@ -132,6 +139,7 @@ defineExpose({ obtenerLista })
           <td>{{ programa.costo }}</td>
           <td>{{ new Date(programa.fechaInicio).toLocaleDateString() }}</td>
           <td>{{ programa.estado }}</td>
+          <td>{{ programa.modalidadClases }}</td>
           <td>
             <Button icon="pi pi-pencil" aria-label="Editar" text @click="emitirEdicion(programa)" />
             <Button
